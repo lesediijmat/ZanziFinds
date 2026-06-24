@@ -174,7 +174,7 @@ button:hover{
 
     <?php foreach($_SESSION['cart'] as $product_id => $item): ?>
 
-        <div class="cart-item">
+        <div class="cart-item" data-item="<?php echo $product_id; ?>">
 
             <div class="cart-left">
 				<strong><?php echo $item['title']; ?></strong>
@@ -213,59 +213,45 @@ button:hover{
 </div>
 
 <script>
-function removeItem(index, button){
+function removeItem(id, button){
 
     fetch('remove_from_cart.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: 'index=' + index
+        body: 'index=' + id
     })
     .then(res => res.json())
     .then(data => {
 
         if(data.status === "success"){
 
-            let item = button.parentElement;
-            item.remove();
+            const item = document.querySelector(`[data-item="${id}"]`);
+            if(item) item.remove();
 
-				document.getElementById("subtotal").innerText = data.subtotal || 0;
-				document.getElementById("total").innerText = data.total || 0;
-				document.getElementById("delivery").innerText = data.empty ? 0 : 20;
+            document.getElementById("subtotal").innerText = data.subtotal;
+            document.getElementById("total").innerText = data.total;
 
-            if(data.empty){
+            if(data.empty || data.subtotal == 0){
 
-				document.querySelectorAll(".cart-item").forEach(el => el.remove());
-				
-				document.getElementById("subtotal").innerText = "0";
-				document.getElementById("total").innerText = "0";
-				document.getElementById("delivery").innerText = "0";
+                document.querySelector(".summary")?.remove();
 
-				let summary = document.getElementById("summaryBox");
-				if(summary) summary.remove();
-
-				if(!document.getElementById("emptyMsg")){
-					let msg = document.createElement("p");
-					msg.id = "emptyMsg";
-					msg.style.textAlign = "center";
-					msg.innerText = "Your cart is empty";
-					document.querySelector(".container").appendChild(msg);
-				}
-
-			}
+                document.querySelector(".container").innerHTML += `
+                    <p style="text-align:center;" id="emptyMsg">
+                        Your cart is empty
+                    </p>
+                `;
+            }
         }
     });
-
 }
 
 function changeQty(id, change){
 
     fetch('update_qty.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'id=' + id + '&change=' + change
     })
     .then(res => res.json())
@@ -278,11 +264,8 @@ function changeQty(id, change){
             document.getElementById("subtotal").innerText = data.subtotal;
             document.getElementById("total").innerText = data.total;
             document.getElementById("delivery").innerText = data.delivery;
-
         }
-
     });
-
 }
 </script>
 </body>
