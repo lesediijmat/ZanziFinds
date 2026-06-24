@@ -123,30 +123,24 @@ body {
 
 function addToCart(id){
 
-    const formData = new FormData();
-    formData.append("product_id", id);
-
     fetch('add_to_cart.php', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'product_id=' + id
     })
-    .then(res => {
-        if (!res.ok) throw new Error("Network error");
-        return res.json();
-    })
+    .then(res => res.json())
     .then(data => {
 
-        console.log("SERVER RESPONSE:", data);
+        console.log(data);
 
-        if (data.status === "success") {
-            showPopup(data.message);
+        if(data.status === "success"){
 
-            const frame = document.getElementById("cartFrame");
-            if (frame) {
-                frame.src = "";
-                setTimeout(() => {
-                    frame.src = "cart.php?refresh=" + Date.now();
-                }, 50);
+            showPopup(data.message || "Added to cart");
+            
+            if (typeof refreshCartFromSession === "function") {
+                refreshCartFromSession();
             }
 
         } else {
@@ -155,12 +149,31 @@ function addToCart(id){
 
     })
     .catch(err => {
-        console.log("FETCH ERROR:", err);
+        console.log(err);
         showPopup("Something went wrong");
     });
-
 }
     
+function showPopup(message){
+
+    let popup = document.createElement("div");
+
+    popup.innerText = message;
+
+    popup.style.position = "fixed";
+    popup.style.bottom = "20px";
+    popup.style.left = "50%";
+    popup.style.transform = "translateX(-50%)";
+    popup.style.background = "green";
+    popup.style.color = "white";
+    popup.style.padding = "12px 18px";
+    popup.style.borderRadius = "12px";
+    popup.style.zIndex = "99999";
+
+    document.body.appendChild(popup);
+
+    setTimeout(() => popup.remove(), 2000);
+}
 </script>
     
 </body>
