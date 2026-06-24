@@ -51,7 +51,6 @@ if(isset($_POST['business_name'])){
 <head>
 <title>ZanziFinds Marketplace</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 	
@@ -195,6 +194,53 @@ while($row = $result->fetch_assoc()){
 	</div>
 </section>
 
+<div id="sellerDashboardModal" class="modal">
+    <div class="modal-content">
+
+        <span class="close-btn" onclick="closeSellerDashboardModal()">&times;</span>
+
+        <iframe src="seller_dashboard.php" class="modal-frame"></iframe>
+
+    </div>
+</div>
+
+<div id="cartModal" class="modal">
+
+	<div class="modal-content">
+
+		<span class="close-btn" onclick="closeCart()">&times;</span>
+
+		<iframe id="cartFrame" src="cart.php" class="modal-frame"></iframe>
+
+	</div>
+
+</div>
+
+<div id="sellerModal" class="modal">
+    
+    <div class="modal-content">
+
+        <span class="close-btn" onclick="closeSellerModal()">&times;</span>
+
+        <iframe src="seller.php" class="modal-frame"></iframe>
+
+    </div>
+
+</div>
+
+<div id="productModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close-btn" onclick="closeProductModal()">&times;</span>
+
+        <iframe id="productFrame" class="modal-frame"></iframe>
+
+    </div>
+
+</div>    
+    
+
 <footer class="footer-bar">
 	<p>
 		<img src="images/LogotextBB.png" class="footerlogo" alt="Website Text Logo" height="40px">
@@ -205,9 +251,9 @@ while($row = $result->fetch_assoc()){
 		<?php } else { ?>
 			<a href="login.php">Profile</a>
 		<?php } ?>
-		<a href="#" onclick="openModal('aboutModal')">About Us</a>
-        <a href="#" onclick="openModal('contactModal')">Contact Us</a>
-        <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a>
+		<a href="#" onclick="openModal('aboutModal'); return false;">About Us</a>
+        <a href="#" onclick="openModal('contactModal'); return false;">Contact Us</a>
+        <a href="#" onclick="openModal('privacyModal'); return false;">Privacy Policy</a>
     </p>
 	<hr width="70%"></hr>
 	<p>
@@ -258,6 +304,9 @@ while($row = $result->fetch_assoc()){
 			<p style="text-align: center" >
 			  LinkedIn: <a href="https://linkedin.com" target="_blank" style="color: #32C8E3; text-decoration: underline;">linkedin.com/in/lesedi-matabologa-6849a4344</a>
 			</p>
+        	<p style="text-align: center" >
+				GitHub: <a href="https://github.com" target="_blank" style="color: #32C8E3; text-decoration: underline;">github.com/lesediijmat/ZanziFinds</a>
+			</p>
 			<p style="text-align: center" >
 				WhatsApp: 068 245 8571 (Mon–Fri, 9am–5pm)
 			</p>
@@ -293,7 +342,7 @@ while($row = $result->fetch_assoc()){
 			</ul>
 		</p>
 		<p style="text-align: center; font-weight: bold">
-			Usage of informatopn collected:
+			Usage of information collected:
 			<ul>
 			<li>The connection of buyers and sellers</li>
 			<li>Ensure secure transactions</li>
@@ -316,54 +365,6 @@ while($row = $result->fetch_assoc()){
 		>
     </div>
 </div>
-
-<div id="sellerDashboardModal" class="modal">
-    <div class="modal-content">
-
-        <span class="close-btn" onclick="closeSellerDashboardModal()">&times;</span>
-
-        <iframe src="seller_dashboard.php" class="modal-frame"></iframe>
-
-    </div>
-</div>
-
-<div id="sellerModal" class="modal" style="display:none;">
-    <div class="modal-content">
-
-        <span class="close-btn" onclick="closeModal('sellerModal')">&times;</span>
-
-        <div class="modal-form-container">
-            <?php include 'create_seller_profile.php'; ?>
-        </div>
-
-    </div>
-</div>
-
-<div id="cartModal" class="modal">
-
-	<div class="modal-content">
-
-		<span class="close-btn" onclick="closeCart()">&times;</span>
-
-		<iframe id="cartFrame" src="cart.php" class="modal-frame"></iframe>
-
-	</div>
-
-</div>
-
-<div id="productModal" class="modal">
-
-    <div class="modal-content">
-
-        <span class="close-btn" onclick="closeProductModal()">&times;</span>
-
-        <iframe id="productFrame" class="modal-frame"></iframe>
-
-    </div>
-
-</div>
-
-
 
 <script>
 
@@ -423,6 +424,14 @@ function showPopup(message){
     setTimeout(() => popup.remove(), 2000);
 }
 
+function openSellerModal(){
+    document.getElementById("sellerModal").style.display = "flex";
+}
+
+function closeSellerModal(){
+    document.getElementById("sellerModal").style.display = "none";
+}
+
 function openCart(event){
     event.preventDefault();
     document.getElementById("cartModal").style.display = "flex";
@@ -431,8 +440,6 @@ function openCart(event){
 function closeCart(){
     document.getElementById("cartModal").style.display = "none";
 }
-
-
 
 function openProductModal(id){
     document.getElementById("productFrame").src = "product.php?id=" + id;
@@ -443,8 +450,6 @@ function closeProductModal(){
     document.getElementById("productModal").style.display = "none";
     document.getElementById("productFrame").src = "";
 }
-
-
 
 function openModal(id){
     document.getElementById(id).style.display = "flex";
@@ -481,14 +486,6 @@ window.addEventListener("click", function(e){
     });
 
 });
-
-function openSellerModal(){
-    document.getElementById("sellerModal").style.display = "flex";
-}
-
-function closeSellerModal(){
-    document.getElementById("sellerModal").style.display = "none";
-}
 
 function openSellerDashboardModal(){
     document.getElementById("sellerDashboardModal").style.display = "flex";
