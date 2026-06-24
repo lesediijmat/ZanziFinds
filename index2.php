@@ -165,6 +165,8 @@ LEFT JOIN sellers ON sellers.id = listings.seller_id
 			<p style="text-align: center" >
 			  LinkedIn: <a href="https://linkedin.com" target="_blank" style="color: #32C8E3; text-decoration: underline;">linkedin.com/in/lesedi-matabologa-6849a4344</a>
 			</p>
+        	<p style="text-align: center" >
+				GitHub: <a href="https://github.com" target="_blank" style="color: #32C8E3; text-decoration: underline;">github.com/lesediijmat/ZanziFinds</a>
 			<p style="text-align: center" >
 				WhatsApp: 068 245 8571 (Mon–Fri, 9am–5pm)
 			</p>
@@ -200,7 +202,7 @@ LEFT JOIN sellers ON sellers.id = listings.seller_id
 			</ul>
 		</p>
 		<p style="text-align: center; font-weight: bold">
-			Usage of informatopn collected:
+			Usage of information collected:
 			<ul>
 			<li>The connection of buyers and sellers</li>
 			<li>Ensure secure transactions</li>
