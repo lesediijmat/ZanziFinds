@@ -139,9 +139,7 @@ function addToCart(id){
 
             showPopup(data.message || "Added to cart");
             
-            if (typeof refreshCartFromSession === "function") {
-                refreshCartFromSession();
-            }
+            updateCartUI(); 
 
         } else {
             showPopup(data.message || "Error adding to cart");
