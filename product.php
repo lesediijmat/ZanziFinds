@@ -111,14 +111,57 @@ body {
 
         <p><?php echo $product['description']; ?></p>
 
-        <button type="button" 
-			class="add-btn"
-			onclick="addToCart('<?php echo $product['title']; ?>', '<?php echo $product['price']; ?>')">
-			Add To Cart
-		</button>
+        <button type="button"
+            class="add-btn"
+            onclick="addToCart(<?php echo $product['id']; ?>)">
+            Add To Cart
+        </button>
     </div>
 
 </div>
+<script>
 
+function addToCart(id){
+
+    const formData = new FormData();
+    formData.append("product_id", id);
+
+    fetch('add_to_cart.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Network error");
+        return res.json();
+    })
+    .then(data => {
+
+        console.log("SERVER RESPONSE:", data);
+
+        if (data.status === "success") {
+            showPopup(data.message);
+
+            const frame = document.getElementById("cartFrame");
+            if (frame) {
+                frame.src = "";
+                setTimeout(() => {
+                    frame.src = "cart.php?refresh=" + Date.now();
+                }, 50);
+            }
+
+        } else {
+            showPopup(data.message || "Error adding to cart");
+        }
+
+    })
+    .catch(err => {
+        console.log("FETCH ERROR:", err);
+        showPopup("Something went wrong");
+    });
+
+}
+    
+</script>
+    
 </body>
 </html>
