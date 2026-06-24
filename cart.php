@@ -267,6 +267,27 @@ function changeQty(id, change){
         }
     });
 }
+    
+function refreshCartFromSession(){
+
+    fetch(window.location.href)
+    .then(res => res.text())
+    .then(html => {
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const newCart = doc.querySelector("#cartContainer");
+
+        if(newCart){
+            document.querySelector("#cartContainer").innerHTML =
+                newCart.innerHTML;
+        }
+
+    });
+
+}
+    
 </script>
 </body>
 </html>
