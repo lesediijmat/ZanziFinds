@@ -1,23 +1,33 @@
 <?php
 include 'config.php';
 
-if(!isset($_SESSION['user_id'])){
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT role FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT id, role FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-if($user['role'] !== 'admin'){
+$allowed_roles = [
+    'super_admin',
+    'user_admin',
+    'listing_admin'
+];
+
+if (!$user || !in_array($user['role'], $allowed_roles)) {
     header("Location: index.php");
     exit;
 }
+
+$isSuperAdmin   = ($user['role'] === 'super_admin');
+$isUserAdmin    = ($user['role'] === 'user_admin');
+$isListingAdmin = ($user['role'] === 'listing_admin');
 ?>
 
 <?php
@@ -30,12 +40,11 @@ $ordersCount = $conn->query("SELECT COUNT(*) as total FROM orders")->fetch_assoc
 $revenue = $conn->query("SELECT SUM(total) as total FROM orders")->fetch_assoc()['total'];
 if(!$revenue) $revenue = 0;
 
-if(!isset($_SESSION['user_id'])){
-    header("Location: login.php");
-    exit;
-}
+if (isset($_GET['delete'])) {
 
-if(isset($_GET['delete'])){
+    if (!$isListingAdmin && !$isSuperAdmin) {
+        die("Unauthorized");
+    }
 
     $id = (int)$_GET['delete'];
 
@@ -64,7 +73,11 @@ if(isset($_GET['fetch_edit'])){
     exit;
 }
 
-if(isset($_POST['update'])){
+if (isset($_POST['update'])) {
+
+    if (!$isListingAdmin && !$isSuperAdmin) {
+        die("Unauthorized: You cannot update listings.");
+    }
 
     $id = (int)$_POST['edit_id'];
     $title = $_POST['title'];
@@ -92,9 +105,45 @@ if(isset($_POST['update'])){
     header("Location: admin.php");
     exit;
 }
+if (isset($_GET['delete_user'])) {
+
+    if (!$isUserAdmin && !$isSuperAdmin) {
+        die("Unauthorized");
+    }
+
+    $id = (int)$_GET['delete_user'];
+
+    $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    header("Location: admin.php#users");
+    exit;
+}
+
+$categoryRevenue = [];
+
+$result = $conn->query("
+    SELECT category,
+           COUNT(*) as total_listings,
+           SUM(price) as revenue
+    FROM listings
+    GROUP BY category
+");
+
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $categoryRevenue[] = $row;
+    }
+}
 ?>
 
 <style>
+    
+html {
+    scroll-behavior:smooth;
+}
+    
 body{
     justify-content:center;
     align-items:center;
@@ -142,6 +191,8 @@ h1 {
 
 .stat-box{
     background:white;
+    text-decoration:none;
+    color:inherit;
     padding:20px;
     border-radius:12px;
     text-align:center;
@@ -344,6 +395,7 @@ tr:nth-child(even){
 <title> Admin Panel</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
@@ -360,71 +412,123 @@ tr:nth-child(even){
 
 <div class="stats">
 
-    <div class="stat-box">
+    <a href="#listings" class="stat-box">
         <i class="fas fa-box"></i>
         <h3><?php echo $listingsCount; ?></h3>
         <p>Listings</p>
-    </div>
+    </a>
 
-    <div class="stat-box">
+    <a href="#users" class="stat-box">
         <i class="fas fa-users"></i>
         <h3><?php echo $usersCount; ?></h3>
         <p>Users</p>
-    </div>
+    </a>
 
-    <div class="stat-box">
+    <a href="#orders" class="stat-box">
         <i class="fas fa-shopping-cart"></i>
         <h3><?php echo $ordersCount; ?></h3>
         <p>Orders</p>
-    </div>
+    </a>
 
-    <div class="stat-box">
+    <a href="#revenue" class="stat-box">
         <i class="fas fa-coins"></i>
         <h3>R <?php echo number_format($revenue,2); ?></h3>
         <p>Revenue</p>
+    </a>
+
+</div>
+    
+<div id="listings">
+    <h2 style="text-align:center; margin-top:40px;">Listings</h2>
+    
+    <div class="table-wrapper">
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Seller</th>
+            <th>Manage</th>
+        </tr>
+
+        <?php while($row = $listings->fetch_assoc()): ?>
+        <tr>
+            <td><img src="images/<?php echo $row['image']; ?>" width="80" ></td>
+            <td><?php echo $row['title']; ?></td>
+            <td>R<?php echo $row['price']; ?></td>
+            <td><?php echo $row['category']; ?></td>
+            <td><?php echo $row['business_name']; ?></td>
+
+            <td>
+                <div class="action-buttons">
+                    <a href="#"
+                       class="edit-btn"
+                       onclick="openEditModal(<?php echo $row['id']; ?>)">
+                       <i class="fas fa-edit"></i> Edit
+                    </a>
+
+                    <a href="#" 
+                        class="delete-btn" 
+                        onclick="openModal(<?= $row['id'] ?>, 'listing')">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+
+                </div>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+    </table>
     </div>
-
 </div>
+    
+<div id="users">
+    <h2 style="text-align:center; margin-top:60px;">Users</h2>
 
-<div class="table-wrapper">
-<table border="1" cellpadding="10">
-    <tr>
-        <th>Image</th>
-        <th>Title</th>
-        <th>Price</th>
-        <th>Category</th>
-        <th>Seller</th>
-        <th>Manage</th>
-    </tr>
+    <div class="table-wrapper">
+        <table border="1" cellpadding="10">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Manage</th>
+            </tr>
 
-    <?php while($row = $listings->fetch_assoc()): ?>
-    <tr>
-        <td><img src="images/<?php echo $row['image']; ?>" width="80" ></td>
-        <td><?php echo $row['title']; ?></td>
-        <td>R<?php echo $row['price']; ?></td>
-        <td><?php echo $row['category']; ?></td>
-        <td><?php echo $row['business_name']; ?></td>
+            <?php
+            $users = $conn->query("SELECT id, fullname, email, role FROM users");
 
-        <td>
-			<div class="action-buttons">
-				<a href="#"
-				   class="edit-btn"
-				   onclick="openEditModal(<?php echo $row['id']; ?>)">
-				   <i class="fas fa-edit"></i> Edit
-				</a>
+            while($u = $users->fetch_assoc()):
+            ?>
 
-				<a href="#" 
-					class="delete-btn" 
-					onclick="openModal(<?php echo $row['id']; ?>)">
-					<i class="fas fa-trash"></i> Delete
-				</a>
-				
-			</div>
-		</td>
-    </tr>
-    <?php endwhile; ?>
-</table>
-</div>
+            <tr>
+                <td><?= $u['id'] ?></td>
+                <td><?= $u['fullname'] ?></td>
+                <td><?= $u['email'] ?></td>
+                <td><?= $u['role'] ?></td>
+
+                <td>
+                    <?php if($isUserAdmin || $isSuperAdmin): ?>
+                        <a href="admin.php?delete_user=<?= $u['id'] ?>"
+                           class="delete-btn"
+                           onclick="openModal(<?= $u['id'] ?>, 'user')">
+                           <i class="fas fa-trash"></i> Delete
+                        </a>
+                    <?php else: ?>
+                        <span style="color:gray;">No Access</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+
+            <?php endwhile; ?>
+        </table>
+    </div>
+</div>    
+    
+<div style="width:80%; margin:40px auto;">
+    <h2 style="text-align:center; margin-top:60px;">Revenue per Category</h2>
+    <canvas id="categoryChart"></canvas>
+</div>   
     
 <div id="deleteModal" class="modal">
     <div class="modal-content">
@@ -456,12 +560,24 @@ tr:nth-child(even){
 
     </div>
 </div>
+    
 
+    
 <script>
-function openModal(id){
+function openModal(id, type){
     document.getElementById('deleteModal').style.display = 'flex';
 
-    document.getElementById('confirmDeleteBtn').href = "admin.php?delete=" + id;
+    let url = "";
+
+    if(type === "listing"){
+        url = "admin.php?delete=" + id;
+    }
+
+    if(type === "user"){
+        url = "admin.php?delete_user=" + id;
+    }
+
+    document.getElementById('confirmDeleteBtn').href = url;
 }
 
 function closeModal(){
@@ -494,6 +610,33 @@ function closeEditModal(){
 
     document.getElementById('editFrame').src = "";
 }
+</script>
+
+<script>
+const labels = <?= json_encode(array_column($categoryRevenue, 'category')); ?>;
+const revenue = <?= json_encode(array_column($categoryRevenue, 'revenue')); ?>;
+
+new Chart(document.getElementById('categoryChart'), {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Revenue per Category (R)',
+            data: revenue,
+            backgroundColor: 'rgba(255, 0, 0, 0.7)',
+            borderColor: 'rgba(255, 0, 0, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 </script>
 </body>
 </html>
