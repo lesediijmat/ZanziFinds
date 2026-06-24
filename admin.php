@@ -151,15 +151,19 @@ body{
 }
 
 .admin-nav{
-    width:90%;
+    width:100%;
     margin:20px auto;
     display:flex;
-    justify-content:flex-start;
+    justify-content:center;
+    background: radial-gradient(circle at top left, #2A8FA3, transparent 60%),
+		radial-gradient(circle at bottom right, #5A52CC, transparent 60%),
+		#C0C0C0;
 }
 
 .back-site-btn{
     display:inline-flex;
     align-items:center;
+    margin:20px;
     gap:8px;
     padding:12px 18px;
     background:white;
@@ -260,6 +264,7 @@ table{
 td{
     text-align:center;
     vertical-align:middle;
+    white-space: nowrap;
 }
 
 tr:nth-child(even){
@@ -401,15 +406,17 @@ tr:nth-child(even){
 
 <body>
 
-<h1>ADMINSTRATION PANEL</h1>
+
 
 <div class="admin-nav">
-    <a href="index.php" class="back-site-btn">
+    <h1>ADMINSTRATION PANEL</h1>
+</div>
+    
+<a href="index.php" class="back-site-btn">
         <i class="fas fa-arrow-left"></i>
         Back to Website
-    </a>
-</div>
-
+</a>
+    
 <div class="stats">
 
     <a href="#listings" class="stat-box">
