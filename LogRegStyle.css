@@ -1,0 +1,556 @@
+body{
+	margin: 0;
+	font-family: Arial;
+	background: #e1f2fc;
+	display: flex;
+	flex-direction: column;
+	justify-content: center; 
+	align-items: center;
+	min-height: 100vh;
+}
+
+.box{
+	margin: 0 auto 0 auto;
+	background: white;
+	border-radius: 12px;
+	border: 2px solid #335469;
+	text-align: center;
+	box-sizing: border-box;
+	height:100%;
+	width: 100%;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 30px;
+}
+
+.logo{
+	width:125px;
+	display:block;
+	margin:0 auto 15px auto;
+}
+
+h1{
+	font-size:30px;
+	margin-bottom:15px;
+}
+
+input{
+	width:90%;
+	padding:15px;
+	margin:10px auto;
+	display:block;
+	border:1px solid #335469;
+	border-radius:12px;
+}
+
+button{
+	margin:15px 0;
+	padding:18px;
+	width:100%;
+	background:blue;
+	color:white;
+	font-size:18px;
+	font-weight:bold;
+	border-radius:12px;
+	border:0;
+}
+
+button:hover {
+    background: #0033cc;
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
+.register-btn{
+    display:block;
+    width:80%;
+    margin:30px auto 0;
+    text-align:center;
+    color:black;
+    font-size:16px;
+}
+
+.login-btn{
+    display:block;
+    width:80%;
+    margin:0px auto 0;
+    text-align:center;
+    color:black;
+    font-size:16px;
+}
+img.site-name {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  max-width: 100%;
+}
+
+.forgot-link{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    margin-bottom:10px;
+    color:blue;
+    font-size:18px;
+	font-weight:bold;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.forgot-link:hover{
+    color:black;
+}
+
+@media (max-width:350px) {
+	body{
+		margin: 0;
+		font-family: Arial;
+		background: #e1f2fc;
+		display: flex;
+		flex-direction: column;
+		justify-content: center; 
+		align-items: center;
+		min-height: 100vh;
+		padding: 0 15px;
+		box-sizing: border-box;
+	}
+
+	.box{
+		margin: 0 10px;
+		background: white;
+		border-radius: 12px;
+		border: 2px solid #335469;
+		text-align: center;
+		box-sizing: border-box;
+		height: 100%;
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 10px;
+	}
+
+	.logo{
+		width:125px;
+		display:block;
+		margin:0 auto 15px auto;
+	}
+
+	h1{
+		font-size:30px;
+		margin-bottom:15px;
+	}
+
+	input{
+		width:90%;
+		padding:15px;
+		margin:10px auto;
+		display:block;
+		border:1px solid #335469;
+		border-radius:12px;
+	}
+
+	button{
+		margin:15px 0;
+		padding:18px;
+		width:100%;
+		background:blue;
+		color:white;
+		font-size:18px;
+		font-weight:bold;
+		border-radius:12px;
+		border:0;
+	}
+
+	button:hover {
+		background: #0033cc;
+		transform: scale(1.05);
+		transition: 0.3s;
+	}
+
+	.register-btn{
+		display:block;
+		width:80%;
+		margin:30px auto 0;
+		text-align:center;
+		color:black;
+		font-size:16px;
+	}
+
+	.login-btn{
+		display:block;
+		width:80%;
+		margin:0px auto 0;
+		text-align:center;
+		color:black;
+		font-size:16px;
+	}
+	img.site-name {
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	  width: auto;
+	  max-width: 100%;
+	}	
+
+}
+
+@media (max-width:400px) {
+	body{
+		margin: 0;
+		font-family: Arial;
+		background: #e1f2fc;
+		display: flex;
+		flex-direction: column;
+		justify-content: center; 
+		align-items: center;
+		min-height: 100vh;
+	}
+
+	.box{
+		margin: 0 auto 0 auto;
+		background: white;
+		border-radius: 12px;
+		border: 2px solid #335469;
+		text-align: center;
+		box-sizing: border-box;
+		height:100%;
+		width: 100%;
+		max-width: 350px;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 30px;
+	}
+
+	.logo{
+		width:125px;
+		display:block;
+		margin:0 auto 15px auto;
+	}
+
+	h1{
+		font-size:30px;
+		margin-bottom:15px;
+	}
+
+	input{
+		width:90%;
+		padding:15px;
+		margin:10px auto;
+		display:block;
+		border:1px solid #335469;
+		border-radius:12px;
+	}
+
+	button{
+		margin:15px 0;
+		padding:18px;
+		width:100%;
+		background:blue;
+		color:white;
+		font-size:18px;
+		font-weight:bold;
+		border-radius:12px;
+		border:0;
+	}
+
+	button:hover {
+		background: #0033cc;
+		transform: scale(1.05);
+		transition: 0.3s;
+	}
+
+	.register-btn{
+		display:block;
+		width:80%;
+		margin:30px auto 0;
+		text-align:center;
+		color:black;
+		font-size:16px;
+	}
+
+	.login-btn{
+		display:block;
+		width:80%;
+		margin:0px auto 0;
+		text-align:center;
+		color:black;
+		font-size:16px;
+	}
+	img.site-name {
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	  width: auto;
+	  max-width: 100%;
+	}	
+
+}
+
+@media (min-width:700px)and (max-width:799px) {
+
+    .box{
+        width: auto;
+		max-width: 850px;
+		height: auto;
+        margin: auto;
+        padding: 30px;
+    	background: white;
+		border-radius: 12px;
+		border: 2px solid #335469;
+		text-align: center;
+		box-sizing: border-box;
+    }
+
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    	background: #e1f2fc;
+    }
+	.logo{
+		width:180px;
+		height: 100%;
+		display:block;
+		margin:0 auto 30px auto;
+	}
+
+	h1{
+		font-size:45px;
+		margin-bottom:30px;
+	}
+
+	input{
+		width: 90%;
+		padding: 15px;
+		margin: 20px auto;
+		display: block;
+		border: 1px solid #335469;
+		border-radius: 12px;
+		font-size: 26px;
+	}
+
+	button{
+		margin: 30px 0;
+		padding: 18px;
+		width: 100%;
+		background: blue;
+		color: white;
+		font-size: 36px;
+		font-weight: bold;
+		border-radius: 12px;
+		border: 0;
+	}
+
+	button:hover {
+		background: #0033cc;
+		transform: scale(1.05);
+		transition: 0.3s;
+	}
+
+	.register-btn{
+		display: block;
+		width: 80%;
+		margin: 30px auto 0;
+		text-align: center;
+		color: black;
+		font-size: 32px;
+	}
+
+	.login-btn{
+		display: block;
+		width: 80%;
+		margin: 0px auto 0;
+		text-align: center;
+		color: black;
+		font-size: 32px;
+	}
+	img.site-name {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: auto;
+		max-width: 100%;
+	}
+}
+
+@media (min-width:800px) and (max-width:1024px){
+
+    .box{
+        width: auto;
+		max-width: 850px;
+		height: auto;
+        margin: auto;
+        padding: 30px;
+    	background: white;
+		border-radius: 12px;
+		border: 2px solid #335469;
+		text-align: center;
+		box-sizing: border-box;
+    }
+
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    	background: #e1f2fc;
+    }
+	.logo{
+		width:250px;
+		height: 100%;
+		display:block;
+		margin:0 auto 30px auto;
+	}
+
+	h1{
+		font-size:45px;
+		margin-bottom:30px;
+	}
+
+	input{
+		width: 90%;
+		padding: 15px;
+		margin: 20px auto;
+		display: block;
+		border: 1px solid #335469;
+		border-radius: 12px;
+		font-size: 26px;
+	}
+
+	button{
+		margin: 30px 0;
+		padding: 18px;
+		width: 100%;
+		background: blue;
+		color: white;
+		font-size: 36px;
+		font-weight: bold;
+		border-radius: 12px;
+		border: 0;
+	}
+
+	button:hover {
+		background: #0033cc;
+		transform: scale(1.05);
+		transition: 0.3s;
+	}
+
+	.register-btn{
+		display: block;
+		width: 80%;
+		margin: 30px auto 0;
+		text-align: center;
+		color: black;
+		font-size: 32px;
+	}
+
+	.login-btn{
+		display: block;
+		width: 80%;
+		margin: 0px auto 0;
+		text-align: center;
+		color: black;
+		font-size: 32px;
+	}
+	img.site-name {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: auto;
+		max-width: 100%;
+	}
+}
+
+@media (min-width:1025px) {
+	body{
+		margin: 0;
+		font-family: Arial;
+		background: #e1f2fc;
+		display: flex;
+		flex-direction: column;
+		justify-content: center; 
+		align-items: center;
+		min-height: 100vh;
+	}
+
+	.box{
+		margin: 0 auto 0 auto;
+		background: white;
+		border-radius: 12px;
+		border: 2px solid #335469;
+		text-align: center;
+		box-sizing: border-box;
+		height:100%;
+		width: 100%;
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 30px;
+	}
+
+	.logo{
+		width:125px;
+		display:block;
+		margin:0 auto 15px auto;
+	}
+
+	h1{
+		font-size:30px;
+		margin-bottom:15px;
+	}
+
+	input{
+		width:90%;
+		padding:15px;
+		margin:10px auto;
+		display:block;
+		border:1px solid #335469;
+		border-radius:12px;
+	}
+
+	button{
+		margin:15px 0;
+		padding:18px;
+		width:100%;
+		background:blue;
+		color:white;
+		font-size:18px;
+		font-weight:bold;
+		border-radius:12px;
+		border:0;
+	}
+
+	button:hover {
+		background: #0033cc;
+		transform: scale(1.05);
+		transition: 0.3s;
+	}
+
+	.register-btn{
+		display:block;
+		width:80%;
+		margin:30px auto 0;
+		text-align:center;
+		color:black;
+		font-size:16px;
+	}
+
+	.login-btn{
+		display:block;
+		width:80%;
+		margin:0px auto 0;
+		text-align:center;
+		color:black;
+		font-size:16px;
+	}
+	img.site-name {
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	  width: auto;
+	  max-width: 100%;
+	}
+}
