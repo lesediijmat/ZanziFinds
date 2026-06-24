@@ -1,10 +1,6 @@
 <?php
-error_reporting(0);
-ini_set('display_errors', 0);
-
-include 'config.php';
 session_start();
-
+include 'config.php';
 header('Content-Type: application/json');
 
 $product_id = $_POST['product_id'] ?? null;
@@ -21,9 +17,8 @@ $stmt = $conn->prepare("SELECT title, price FROM listings WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result();
-$product = $result->fetch_assoc();
 
-if (!$product) {
+if (!$result || $result->num_rows === 0) {
     echo json_encode([
         "status" => "error",
         "message" => "Product not found"
@@ -31,9 +26,7 @@ if (!$product) {
     exit;
 }
 
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+$product = $result->fetch_assoc();
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
