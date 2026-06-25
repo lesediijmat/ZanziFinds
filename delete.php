@@ -11,7 +11,6 @@ if(!isset($_SESSION['user_id'])){
 $user_id = $_SESSION['user_id'];
 $id = intval($_POST['id']);
 
-// get seller
 $stmt = $conn->prepare("SELECT id FROM sellers WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -24,7 +23,6 @@ if(!$seller){
 
 $seller_id = $seller['id'];
 
-// delete listing
 $stmt = $conn->prepare("
     DELETE FROM listings 
     WHERE id = ? AND seller_id = ?
